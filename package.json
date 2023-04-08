@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:dev": "http-server dist -p 8081 -c 1 --push-state"
   },
   "dependencies": {
     "dexie": "^3.2.3",
