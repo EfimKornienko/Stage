@@ -24,7 +24,9 @@ const count = ref(0)
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 30px;
+    padding: 0 30px;
+    min-height: 50px;
+    max-height: 50px;
     /* border-bottom: 1px solid #fff0ff; */
     /* box-shadow: rgb(0 0 0 / 4%) 0px 2px 0px; */
   }
