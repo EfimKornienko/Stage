@@ -3,11 +3,15 @@
   import { rules, goalOptions, regionOptions, worksOptions, serialize } from './form/utils'
   import { GlassesOutline, Glasses } from '@vicons/ionicons5'
   import { db } from '../database'
+  import { useRouter, useRoute } from 'vue-router'
 
   components: {
     GlassesOutline,
     Glasses
   }
+  
+  const router = useRouter()
+  const route = useRoute()
 
   const formRef = ref(null)
   const addressCheck = ref(false)
@@ -118,9 +122,12 @@
     })
       .then(resp => resp.json())
       .then(data => {
+        console.log(data.token)
         db.jwt.put({
           user: 'token',
           jwt: data.token
+        }).then(() => {
+          router.push({name: 'Test', params: {tab: route.params.tab}})
         })
       })
   }

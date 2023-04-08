@@ -1,9 +1,11 @@
 <script setup>
-  import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
   import Tab from './Tab.vue'
 
   const state = reactive({
-    width: window.innerWidth
+    width: window.innerWidth,
+    catrgories: [],
+    loading: true
   })
 
   const tab = ref('ios') 
@@ -30,8 +32,27 @@
     state.width = window.innerWidth
   }
 
+  // const options = computed(() => {
+  //   return state.catrgories.map(el => {
+  //     return {
+  //       label: el.name,
+  //       value: el.id
+  //     }
+  //   })
+  // })
+
+  const fetchCatrgories = async () => {
+    await fetch('http://p0var.ru/api/category', {method: 'GET'})
+      .then(resp => resp.json())
+      .then(data => {
+        console.log(data)
+        state.catrgories = data
+      })
+  }
+
   onMounted(() => {
     window.addEventListener('resize', setwWidth)
+    fetchCatrgories()
   })
 </script>
 
