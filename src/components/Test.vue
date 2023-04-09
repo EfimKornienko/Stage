@@ -89,15 +89,8 @@ const complete = async () => {
         questions: questions
       })
     })
-      .then(resp => resp.json())
-      .then(data => {
-        console.log(data.token)
-        db.jwt.put({
-          user: 'token',
-          jwt: data.token
-        }).then(() => {
-          router.push({name: 'Test', params: {tab: route.params.tab}})
-        })
+      .then(() => {
+        router.push({name: 'TestList'})
       })
 }
 

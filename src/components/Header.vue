@@ -1,11 +1,34 @@
 <script setup>
-import { ref } from 'vue'
+import { reactive, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { db } from '@/database'
 
-defineProps({
-  msg: String,
+const router = useRouter()
+const route = useRoute()
+const state = reactive({
+  auth: null
 })
 
-const count = ref(0)
+watch(route, () => {
+  setAuth()
+})
+
+const logout = () => {
+  db.jwt.delete('token')
+  state.auth = false
+  router.push({name: 'Main'})
+}
+
+const setAuth = () => {
+  db.jwt.get({user: 'token'})
+    .then(data => {
+      state.auth = !data.token
+    })
+}
+
+onMounted(() => {
+  setAuth()
+})
 </script>
 
 <template>
@@ -13,8 +36,32 @@ const count = ref(0)
     <div class="routes">
       <router-link to="/">Главная</router-link>
     </div>
-    <div class="auth">
-      <router-link to="/">Войти</router-link>
+    <div 
+      v-if="!state.auth"
+      class="auth"
+    >
+      <router-link :to="'/login'">Войти</router-link>
+    </div>
+    <div 
+      v-if="state.auth"
+      class="controls"
+    >
+      <div 
+        v-if="state.auth"
+        class="auth"
+      >
+        <router-link :to="'/list'">Личный кабинет</router-link>
+      </div>
+      <div 
+        v-if="state.auth"
+        class="auth"
+      >
+        <a 
+          @click="() => logout()"
+        >
+          Выйти
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -31,6 +78,11 @@ const count = ref(0)
     /* box-shadow: rgb(0 0 0 / 4%) 0px 2px 0px; */
   }
 
+  .controls {
+    display: flex;
+    gap: 30px;
+  }
+
   a {
     font-size: 16px;
     color: black;
@@ -39,5 +91,6 @@ const count = ref(0)
 
   a:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 </style>

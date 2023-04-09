@@ -13,7 +13,7 @@
     loading: true
   })
 
-  const tab = ref('dbproger') 
+  const tab = ref('system') 
 
   const setwWidth = () => {
     state.width = window.innerWidth

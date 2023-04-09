@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, watch } from 'vue'
+  import { ref, watch, onMounted } from 'vue'
   import { rules, goalOptions, regionOptions, worksOptions, serialize } from './form/utils'
   import { GlassesOutline, Glasses } from '@vicons/ionicons5'
   import { db } from '../database'
@@ -18,6 +18,7 @@
   const rPasswordFormItemRef = ref(null)
   
   const formValue = ref({
+    auth: false,
     user: {
       login: '',
       password: '',
@@ -124,7 +125,8 @@
       .then(data => {
         db.jwt.put({
           user: 'token',
-          jwt: data.token
+          jwt: data.token,
+          role: "USER"
         }).then(() => {
           router.push({name: 'Test', params: {tab: route.params.tab}})
         })
@@ -139,6 +141,17 @@
       }
     })
   }
+
+  const setAuth = (val) => {
+    state.auth = val
+    if(val) {
+      
+    }
+  }
+
+  onMounted(() => {
+    setAuth(!route.params.user)
+  })
 
 </script>
 

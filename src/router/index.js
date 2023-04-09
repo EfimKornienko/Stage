@@ -2,9 +2,10 @@ import Main from '../components/main/Main.vue'
 import Form from '../components/Form.vue'
 import Test from '../components/Test.vue'
 import {createRouter, createWebHashHistory} from 'vue-router'
-import TestList from "../components/test/TestList.vue";
-import InfoList from "../components/info/InfoList.vue";
-import InfoItem from "../components/info/InfoItem.vue";
+import TestList from "../components/test/TestList.vue"
+import InfoList from "../components/info/InfoList.vue"
+import InfoItem from "../components/info/InfoItem.vue"
+import Login from '../components/Login.vue'
 
 
 const routes = [
@@ -16,6 +17,11 @@ const routes = [
     {
       path: '/form/:tab',
       name: 'Form',
+      component: Form
+    },
+    {
+      path: '/:user/form',
+      name: 'User',
       component: Form
     },
     {
@@ -37,7 +43,12 @@ const routes = [
       path: '/info',
       name: 'InfoItem',
       component: InfoItem
-    }
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
 ]
 
 const router = createRouter({
