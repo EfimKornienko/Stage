@@ -246,3 +246,41 @@ export const serialize = (data) => {
     "password": user.password
   }
 }
+
+export const userSerialize = (data) => {
+  const fio = data.fio.split(' ')
+  return {
+    auth: true,
+    user: {
+      login: '',
+      password: '',
+      reenteredPassword: '',
+      name: fio[1],
+      surname: fio[0],
+      middle: fio[2],
+      birth: Date.now(),
+      place: data.birthPlace,
+      familyStatus: data.familyStatus === 'Холост/Не замужем',
+      children: data.hasChildren,
+      addressReg: data.regAddress,
+      addressFact: data.liveAddress,
+      childrenDesc: data.countChildren
+    },
+    contacts: {
+      mobileNumber: data.phone,
+      homeNumber: data.homePhone,
+      email: data.email
+    },
+    direction: {
+      goal: data.target,
+      dateRange: [Date.now(), Date.now()],
+      region: data.stagePlace,
+      repeat: data.sendEarly,
+      result: data.earlyResult,
+      wantWork: data.wantWorkInBank,
+      workType: [],
+      expectations: data.expectations,
+      relocation: data.changeCity
+    }
+  }
+}

@@ -20,7 +20,6 @@ const fetchTest = async () => {
       state.jwt = data.jwt
       db.category.get({user: 'token'})
         .then(data => {
-          console.log(data)
           fetch(`http://p0var.ru/api/tests/start/${data.category}`, {
             method: 'POST',
             headers: {
@@ -38,7 +37,6 @@ const fetchTest = async () => {
 }
 
 const checkValue = (item, answer) => {
-  console.log(!!state.checked.find(el => el.question === item && el.answer === answer))
   return !!state.checked.find(el => el.question === item && el.answer === answer)
 }
 

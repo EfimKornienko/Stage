@@ -81,7 +81,6 @@ const columns = [
 ]
 
 const accept = (row) => {
-  console.log(row.attemptId)
   const url = 'http://p0var.ru' + `/api/admin/approve/${row.attemptId}`
   fetch(url, {
     method: 'POST',
@@ -96,7 +95,6 @@ const accept = (row) => {
 }
 
 const decline = (row) => {
-  console.log(row.attemptId)
   const url = 'http://p0var.ru' + `/api/admin/decline/${row.attemptId}`
   fetch(url, {
     method: 'POST',
@@ -136,6 +134,7 @@ onMounted(() => {
 
 <template>
   <div class="test-list">
+    <router-link v-if="state.userRole === 'ADMIN'" :to="'/info'">Создать категорию</router-link>
     <h3>Список пройденых тестов</h3>
     <n-data-table
       :bordered="false"

@@ -1,6 +1,6 @@
 <script setup>
   import { ref, watch, onMounted } from 'vue'
-  import { rules, goalOptions, regionOptions, worksOptions, serialize } from './form/utils'
+  import { rules, goalOptions, regionOptions, worksOptions, serialize, userSerialize } from './form/utils'
   import { GlassesOutline, Glasses } from '@vicons/ionicons5'
   import { db } from '../database'
   import { useRouter, useRoute } from 'vue-router'
@@ -53,7 +53,6 @@
   })
 
   watch(addressCheck, val => {
-    console.log(formValue.value.user)
     const user = formValue.value.user
     if(val) user.addressFact = user.addressReg
   })
@@ -143,14 +142,23 @@
   }
 
   const setAuth = (val) => {
-    state.auth = val
+    formValue.auth = val
     if(val) {
-      
+      fetch(`http://p0var.ru/api/user/info/${route.params.user}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+        .then(resp => resp.json())
+        .then(data => {
+          formValue.value =  userSerialize(data)
+        })
     }
   }
 
   onMounted(() => {
-    setAuth(!route.params.user)
+    setAuth(!!route.params.user)
   })
 
 </script>
@@ -187,7 +195,10 @@
         }
       }"
     >
-      <div class="block">
+      <div 
+        v-if="!formValue.auth"
+        class="block"
+      >
         <div class="main-header">
           <h2>Учетные данные</h2>
           <n-button
@@ -557,7 +568,10 @@
           </n-form-item>
         </div>
       </div>
-      <div class="btn-footer">
+      <div
+        v-if="!formValue.auth"
+        class="btn-footer"
+      >
         <n-form-item>
           <n-button
             type="success"

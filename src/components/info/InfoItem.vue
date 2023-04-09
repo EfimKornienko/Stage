@@ -1,7 +1,11 @@
 <script setup>
 import {reactive} from 'vue'
 import { db } from '@/database'
+import { useRoute, useRouter } from 'vue-router'
 
+
+const router = useRouter()
+const route = useRoute()
 let criterias = reactive([{id: 0, content: ""}])
 const state = reactive({
   key: '',
@@ -38,7 +42,7 @@ const complete = async () => {
       })
         .then(resp => resp.json())
         .then(data => {
-          console.log(data)
+          router.push({name: 'TestList'})
         })
     })
   }

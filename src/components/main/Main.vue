@@ -32,7 +32,6 @@
     await fetch('http://p0var.ru/api/category', {method: 'GET'})
       .then(resp => resp.json())
       .then(data => {
-        console.log(data)
         state.catrgories = data
         state.loading = false
       })
