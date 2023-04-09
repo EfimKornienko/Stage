@@ -122,7 +122,6 @@
     })
       .then(resp => resp.json())
       .then(data => {
-        console.log(data.token)
         db.jwt.put({
           user: 'token',
           jwt: data.token
@@ -217,6 +216,18 @@
               type="password"
               placeholder="Повторите пароль"
               @keydown.enter.prevent
+            />
+          </n-form-item>
+          <n-form-item 
+            label="Электронная почта" 
+            path="contacts.email"
+            size="large"  
+            :style="{ width: '350px' }"
+          >
+            <n-input 
+              type="tel"
+              v-model:value="formValue.contacts.email" 
+              placeholder="Введите эл.почту" 
             />
           </n-form-item>
         </div>
@@ -374,18 +385,6 @@
               type="tel"
               v-model:value="formValue.contacts.homeNumber" 
               placeholder="Введите домашний телефон" 
-            />
-          </n-form-item>
-          <n-form-item 
-            label="Электронная почта" 
-            path="contacts.email"
-            size="large"  
-            :style="{ width: '350px' }"
-          >
-            <n-input 
-              type="tel"
-              v-model:value="formValue.contacts.email" 
-              placeholder="Введите эл.почту" 
             />
           </n-form-item>
         </div>

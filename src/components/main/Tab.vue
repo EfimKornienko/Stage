@@ -23,14 +23,14 @@ components: {
             v-if="props.type === 'system'"
         />
         <AlbumsSharp 
-            v-if="props.type === 'admin-db'"
+            v-if="props.type === 'admindb'"
         />
         <DesktopSharp 
-            v-if="props.type === 'dev-db'"
+            v-if="props.type === 'dbproger'"
         />
     </n-icon>
     <span class="title">
-        С этой профессией ты станешь крутым
+        {{ title }}
     </span>
   </div>
 </template>
@@ -41,11 +41,18 @@ components: {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin-top: 15vh;
+    margin-top: 12vh;
   }
 
   .title {
+    width: 70vw;
     margin-top: 30px;
     font-size: 24px;
+  }
+
+  @media (max-width: 730px) {
+    .title {
+      font-size: 14px;
+    }
   }
 </style>

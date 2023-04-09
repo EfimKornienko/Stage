@@ -8,38 +8,20 @@ import { ref, reactive, computed, onMounted } from 'vue'
     loading: true
   })
 
-  const tab = ref('ios') 
-  const options = [
-    {
-      label: "iOS разработчик",
-      value: 'ios'
-    },
-    {
-      label: "Системный аналитик",
-      value: 'system'
-    },
-    {
-      label: "Администратор баз данных",
-      value: 'admin-db'
-    },
-    {
-      label: "Разработчик баз данных",
-      value: 'dev-db'
-    },
-  ]
+  const tab = ref('dbproger') 
 
   const setwWidth = () => {
     state.width = window.innerWidth
   }
 
-  // const options = computed(() => {
-  //   return state.catrgories.map(el => {
-  //     return {
-  //       label: el.name,
-  //       value: el.id
-  //     }
-  //   })
-  // })
+  const options = computed(() => {
+    return state.catrgories.map(el => {
+      return {
+        label: el.name,
+        value: el.key
+      }
+    })
+  })
 
   const fetchCatrgories = async () => {
     await fetch('http://p0var.ru/api/category', {method: 'GET'})
@@ -47,6 +29,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
       .then(data => {
         console.log(data)
         state.catrgories = data
+        state.loading = false
       })
   }
 
@@ -57,7 +40,10 @@ import { ref, reactive, computed, onMounted } from 'vue'
 </script>
 
 <template>
-  <div class="main">
+  <div 
+    v-if="!state.loading"
+    class="main"
+  >
     <n-tabs 
       v-if="state.width > 730"
       :value="tab"
@@ -65,31 +51,18 @@ import { ref, reactive, computed, onMounted } from 'vue'
       justify-content="center" 
       type="line" 
     >
+      <n-tab-pane
+        v-for="cat in state.catrgories"
+        :key="cat.id"
+        :name="cat.key" 
+        :tab="cat.name"
+      >
+        <Tab 
+          :title="cat.description"
+          :type="tab"
+        />
+      </n-tab-pane>
       <!-- animated -->
-      <n-tab-pane name="ios" tab="iOS разработчик">
-        <Tab 
-          title="Хочешь стать программистом?"
-          :type="tab"
-        />
-      </n-tab-pane>
-      <n-tab-pane name="system" tab="Cистемный аналитик">
-        <Tab 
-          title="Хочешь стать программистом?"
-          :type="tab"
-        />
-      </n-tab-pane>
-      <n-tab-pane name="admin-db" tab="Аминистратор баз данных">
-        <Tab 
-          title="Хочешь стать программистом?"
-          :type="tab"
-        />
-      </n-tab-pane>
-      <n-tab-pane name="dev-db" tab="Разработчик баз данных">
-        <Tab 
-          title="Хочешь стать программистом?"
-          :type="tab"
-        />
-      </n-tab-pane>
     </n-tabs>
     <div
       v-else
@@ -101,7 +74,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
         size="medium"
       />
       <Tab 
-        title="Хочешь стать программистом?"
+        :title="state.catrgories.find(el => el.key === tab).description"
         :type="tab"
       />
     </div>
@@ -119,6 +92,8 @@ import { ref, reactive, computed, onMounted } from 'vue'
 
 <style scoped>
   .main {
+    height: calc(100vh - 50px);
+    overflow: auto;
     padding: 10px 0;
     display: flex;
     flex-direction: column;
@@ -143,6 +118,6 @@ import { ref, reactive, computed, onMounted } from 'vue'
 
   .accept-btn {
     width: 40vw;
-    margin-bottom: 20vh;
+    margin-bottom: 10vh;
   }
 </style>
