@@ -1,6 +1,11 @@
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+  import { ref, reactive, computed, onMounted } from 'vue'
+  import { useRouter, useRoute } from 'vue-router'
+  import { db } from '@/database'
   import Tab from './Tab.vue'
+
+  const router = useRouter()
+  const route = useRoute()
 
   const state = reactive({
     width: window.innerWidth,
@@ -33,6 +38,16 @@ import { ref, reactive, computed, onMounted } from 'vue'
       })
   }
 
+  const next = () => {
+    const tabId = state.catrgories.find(el => el.key === tab.value).id
+    db.category.put({
+      user: 'token', 
+      category: tabId
+    }).then(() => {
+      router.push({name: 'Form', params: {tab: tab.value}})
+    })
+  }
+
   onMounted(() => {
     window.addEventListener('resize', setwWidth)
     fetchCatrgories()
@@ -58,7 +73,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
         :tab="cat.name"
       >
         <Tab 
-          :title="cat.description"
+          :category="cat"
           :type="tab"
         />
       </n-tab-pane>
@@ -74,7 +89,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
         size="medium"
       />
       <Tab 
-        :title="state.catrgories.find(el => el.key === tab).description"
+        :category="state.catrgories.find(el => el.key === tab)"
         :type="tab"
       />
     </div>
@@ -83,7 +98,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
       strong 
       secondary 
       type="primary"
-      :onclick="() => $router.push({name: 'Form', params: {tab: tab}})"
+      :onclick="() => next()"
     >
       Подать заявку
     </n-button>
@@ -118,6 +133,6 @@ import { ref, reactive, computed, onMounted } from 'vue'
 
   .accept-btn {
     width: 40vw;
-    margin-bottom: 10vh;
+    margin-bottom: 5vh;
   }
 </style>

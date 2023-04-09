@@ -18,18 +18,21 @@ const fetchTest = async () => {
   await db.jwt.get({user: 'token'})
     .then(data => {
       state.jwt = data.jwt
-      // ${route.params.id}
-      fetch(`http://p0var.ru/api/tests/start/3`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${data.jwt}`
-        },
-      })
-        .then(resp => resp.json())
+      db.category.get({user: 'token'})
         .then(data => {
-          state.questions = data.questions
-          state.id = data.id
+          console.log(data)
+          fetch(`http://p0var.ru/api/tests/start/${data.category}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${state.jwt}`
+            },
+          })
+            .then(resp => resp.json())
+            .then(data => {
+              state.questions = data.questions
+              state.id = data.id
+            })
         })
     })
 }
